@@ -21,7 +21,7 @@ import os
 import fixtures
 import testtools
 
-from oscplugin.tests import fakes
+from oscdebug.tests import fakes
 
 _TRUE_VALUES = ('true', '1', 'yes')
 

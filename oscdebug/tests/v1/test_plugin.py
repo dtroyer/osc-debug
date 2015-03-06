@@ -1,5 +1,3 @@
-#   Copyright 2013 Nebula Inc.
-#
 #   Licensed under the Apache License, Version 2.0 (the "License"); you may
 #   not use this file except in compliance with the License. You may obtain
 #   a copy of the License at
@@ -15,20 +13,18 @@
 
 import sys
 
-from oscplugin.tests import base
-from oscplugin.tests import fakes
-from oscplugin.v1 import plugin
+from oscdebug.tests import base
+from oscdebug.tests import fakes
+from oscdebug.v1 import plugin
 
 # Load the plugin init module for the plugin list and show commands
-import oscplugin.plugin
-plugin_name = 'oscplugin'
-plugin_client = 'oscplugin.plugin'
+import oscdebug.plugin
+plugin_name = 'oscdebug'
+plugin_client = 'oscdebug.plugin'
 
 
 class FakePluginV1Client(object):
     def __init__(self, **kwargs):
-        #self.servers = mock.Mock()
-        #self.servers.resource_class = fakes.FakeResource(None, {})
         self.auth_token = kwargs['token']
         self.management_url = kwargs['endpoint']
 
@@ -37,14 +33,10 @@ class TestPluginV1(base.TestCommand):
     def setUp(self):
         super(TestPluginV1, self).setUp()
 
-        self.app.client_manager.oscplugin = FakePluginV1Client(
+        self.app.client_manager.oscdebug = FakePluginV1Client(
             endpoint=fakes.AUTH_URL,
             token=fakes.AUTH_TOKEN,
         )
-
-        # Get a shortcut to the Service Catalog Mock
-        #self.catalog_mock = self.app.client_manager.identity.service_catalog
-        #self.catalog_mock.reset_mock()
 
 
 class TestPluginList(TestPluginV1):
@@ -69,12 +61,14 @@ class TestPluginList(TestPluginV1):
 
         collist = ('Name', 'Versions', 'Module')
         self.assertEqual(columns, collist)
-        datalist = ((
+        datalist = (
             plugin_name,
-            oscplugin.plugin.API_VERSIONS.keys(),
+            oscdebug.plugin.API_VERSIONS.keys(),
             plugin_client,
-        ), )
-        self.assertEqual(tuple(data), datalist)
+        )
+        for d in data:
+            if d[0] == plugin_name:
+                self.assertEqual(datalist, d)
 
 
 class TestPluginShow(TestPluginV1):
@@ -104,7 +98,7 @@ class TestPluginShow(TestPluginV1):
         collist = ('1', 'module', 'name')
         self.assertEqual(columns, collist)
         datalist = (
-            oscplugin.plugin.API_VERSIONS['1'],
+            oscdebug.plugin.API_VERSIONS['1'],
             plugin_client,
             plugin_name,
         )

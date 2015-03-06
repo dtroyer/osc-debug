@@ -19,10 +19,10 @@ test_oscplugin
 Tests for `oscplugin` module.
 """
 
-from oscplugin.tests import base
+from oscdebug.tests import base
 
 
-class TestOscplugin(base.TestCase):
+class TestOscDebug(base.TestCase):
 
     def test_something(self):
         pass
