@@ -30,5 +30,6 @@ class FakeApp(object):
 
 class FakeClientManager(object):
     def __init__(self):
-        self.identity = None
-        self.auth_ref = None
+        # self.identity = None
+        # self.auth_ref = None
+        self.session = None
